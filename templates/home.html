@@ -1,1 +1,388 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgriSmartHub</title>
+
+    <!-- Include Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <!-- Add FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+    <!-- Dialogflow Chatbot Script -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+            background-image: url('static/images/bg.jpg'); /* Set your farm land background here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent background for better readability */
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .feature-image {
+            width: 100px;
+            height: auto;
+            margin-bottom: 15px;
+            border: 2px solid #228B22; /* Border around images */
+            padding: 10px;
+            border-radius: 10px;
+            background-color: white;
+        }
+
+        .btn-block {
+            margin-top: 10px;
+        }
+
+        .border-container {
+            border: 2px solid #228B22; /* Border around each feature container */
+            padding: 20px;
+            border-radius: 10px;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+        h1, p {
+            color: #228B22;
+        }
+
+        .row {
+            margin-top: 20px;
+        }
+
+        /* Align buttons and images */
+        .col-md-4 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer styles */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #05380b;
+            font-size: 14px;
+        }
+    </style>
+
+    <script>
+const translations = {
+    en: {
+        home: "Home",
+        detectionEngine: "Detection Engine",
+        supplements: "Supplements",
+        cropRecommendation: "Crop Recommendation",
+        yieldPrediction: "Yield Prediction",
+        agriBot: "AgriBot",
+        sensor: "Sensor",
+        forecast: "Forecast",
+        title: "AgriSmartHub",
+        subtitle: "Developed by Team 'TRANSCENDENCE'",
+        detectionButton: "Detection Engine",
+        cropRecommendationButton: "Crop Recommendation",
+        yieldPredictionButton: "Yield Prediction",
+        agriReels: "Agri-Reels",
+        fertilizerCalculator: "Fertilizer Calculator",
+        newsUpdates: "News and Updates",
+        tools: "Tools",
+        govtSchemes: "Govt Schemes",
+        eLearning: "E-learning",
+        fertilizers: "Fertilizers",
+        seeds: "Seeds",
+        footer: "© 2024 AgriSmartHub | All Rights Reserved",
+        agriPdfUrlLoanButton: "AGRI PDF/URL AND LOAN",
+        pricePredictionButton: "PRICE PREDICTION",
+        regionalCropsButton: "REGIONAL CROPS"
+    },
+    ta: {
+        home: "முகப்பு",
+        detectionEngine: "கண்டறிதல் இயந்திரம்",
+        supplements: "உட்பொருள்",
+        cropRecommendation: "பயிர் பரிந்துரை",
+        yieldPrediction: "விளைச்சல் கணிப்பு",
+        agriBot: "கிருஷி உதவியாளர்",
+        sensor: "சென்சார்",
+        forecast: "வானிலை முன்னறிவிப்பு",
+        title: "அக்ரி ஸ்மார்ட் ஹப்",
+        subtitle: "டீம் 'TRANSCENDENCE' உருவாக்கியது",
+        detectionButton: "கண்டறிதல் இயந்திரம்",
+        cropRecommendationButton: "பயிர் பரிந்துரை",
+        yieldPredictionButton: "விளைச்சல் கணிப்பு",
+        agriReels: "அக்ரி வீடியோ",
+        fertilizerCalculator: "உரைவேர் கணக்கீடு",
+        newsUpdates: "செய்திகள் மற்றும் புதுப்பிப்புகள்",
+        tools: "கருவிகள்",
+        govtSchemes: "அரசு திட்டங்கள்",
+        eLearning: "மின்நூல்கள்",
+        fertilizers: "உரங்கள்",
+        seeds: "விதைகள்",
+        footer: "© 2024 அக்ரி ஸ்மார்ட் ஹப் | அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை",
+        agriPdfUrlLoanButton: "விவசாய PDF/URL மற்றும் கடன்",
+        pricePredictionButton: "விலை கணிப்பு",
+        regionalCropsButton: "பிராந்திய பயிர்கள்"
+    },
+    te: {
+        home: "హోమ్",
+        detectionEngine: "డిటెక్షన్ ఇంజిన్",
+        supplements: "పూరకాలు",
+        cropRecommendation: "పంట సిఫార్సు",
+        yieldPrediction: "దిగుబడి అంచనా",
+        agriBot: "అగ్రి బాట్",
+        sensor: "సెన్సార్",
+        forecast: "వాతావరణ సూచన",
+        title: "అగ్రి స్మార్ట",
+        subtitle: "'TRANSCENDENCE' బృందం అభివృద్ధి చేసింది",
+        detectionButton: "డిటెక్షన్ ఇంజిన్",
+        cropRecommendationButton: "పంట సిఫార్సు",
+        yieldPredictionButton: "దిగుబడి అంచనా",
+        agriReels: "అగ్రి రీల్స్",
+        fertilizerCalculator: "ఎరువుల కాలిక్యులేటర్",
+        newsUpdates: "సమాచారం మరియు నవీకరణలు",
+        tools: "పరికరాలు",
+        govtSchemes: "ప్రభుత్వ పథకాలు",
+        eLearning: "ఇ-లెర్నింగ్",
+        fertilizers: "ఎరువులు",
+        seeds: "విత్తనాలు",
+        footer: "© 2024 అగ్రి స్మార్ట్ హబ్ | అన్ని హక్కులు రిజర్వు చేయబడ్డాయి",
+        agriPdfUrlLoanButton: "వ్యవసాయ PDF/URL మరియు రుణం",
+        pricePredictionButton: "ధర అంచనా",
+        regionalCropsButton: "ప్రాంతీయ పంటలు"
+    }
+};
+
+
+        function setLanguage(lang) {
+            document.querySelectorAll("[data-translate]").forEach(elem => {
+                const key = elem.getAttribute("data-translate");
+                elem.textContent = translations[lang][key];
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            setLanguage("en"); // Default language
+        });
+    </script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#05380b;">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="navbar-brand active">
+                    <a class="nav-link" data-translate="home" href="/" style="color: white;"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="navbar-brand active">
+                    <a class="nav-link" data-translate="detectionEngine" href="/index" style="color: white;"><i class="fas fa-search"></i> Detection Engine</a>
+                </li>
+                <li class="navbar-brand">
+                    <a class="nav-link" data-translate="cropRecommendation" href="/recomendation" style="color: white;"><i class="fas fa-seedling"></i> Crop Recommendation</a>
+                </li>
+                <li class="navbar-brand">
+                    <a  class="nav-link" data-translate="yieldPrediction" href="/forecast" style="color: white;"><i class="fas fa-chart-line"></i> Yield Prediction</a>
+                </li>
+            </ul>
+        </div>
+        <div class="ml-auto">
+            <button onclick="setLanguage('en')" class="btn btn-light">English</button>
+            <button onclick="setLanguage('ta')" class="btn btn-light">தமிழ்</button>
+            <button onclick="setLanguage('te')" class="btn btn-light">తెలుగు</button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container text-center" style="margin-top: 50px;">
+        <h1 class="display-4" data-translate="title"></h1>
+        <p class="lead" data-translate="subtitle"></p>
+        
+        <!-- Example of a section with buttons and content that translate -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/detection.png" alt="Detection Engine" class="feature-image"> <!-- Image for Detection Engine -->
+                    <a href="/index">
+                        <button class="btn btn-success btn-lg btn-block">
+                            <i class="fas fa-search"></i> <span data-translate="detectionButton"></span>
+                        </button>                        
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/crop_recommendation.png" alt="Crop Recommendation" class="feature-image"> <!-- Image for Crop Recommendation -->
+                    <a href="/recomendation">
+                        <button class="btn btn-warning btn-lg btn-block">
+                            <i class="fas fa-seedling"></i> <span data-translate="cropRecommendationButton"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/agri_reels.png" alt="Yield Prediction" class="feature-image"> <!-- Image for Agri-Reels -->
+                    <a href="/yiee">
+                        <button class="btn btn-dark btn-lg btn-block">
+                            <i class="fas fa-chart-line"></i> <span data-translate="yieldPredictionButton"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/pdf.jpg" alt="AGRI PDF/URL AND LOAN" class="feature-image"> <!-- Image for Detection Engine -->
+                    <a href="/loan">
+                        <button class="btn btn-success btn-lg btn-block">
+                            <i class="fas fa-file-alt"></i> <span data-translate="agriPdfUrlLoanButton"></span>
+                        </button>                        
+                    </a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/price.png" alt="PRICE PREDICTION" class="feature-image"> <!-- Image for Crop Recommendation -->
+                    <a href="/new">
+                        <button class="btn btn-warning btn-lg btn-block">
+                            <i class="fas fa-dollar-sign"></i> <span data-translate="pricePredictionButton"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/ap.jpg" alt="REGIONAL CROPS" class="feature-image"> <!-- Image for Agri-Reels -->
+                    <a href="/district">
+                        <button class="btn btn-dark btn-lg btn-block">
+                            <i class="fas fa-globe"></i> <span data-translate="regionalCropsButton"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+        
+        <div class="row">
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/reels.png" alt="Agri-Reels" class="feature-image"> <!-- Image for Agri-Reels -->
+                    <a href="/yield">
+                        <button class="btn btn-info btn-lg btn-block">
+                            <i class="fas fa-play-circle"></i> <span data-translate="agriReels"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/fertilizer_calculator.png" alt="Fertilizer Calculator" class="feature-image"> <!-- Image for Fertilizer Calculator -->
+                    <a href="https://iiopr.icar.gov.in/fertilizercalculator.php" target="_blank">
+                        <button class="btn btn-success btn-lg btn-block">
+                            <i class="fas fa-calculator"></i> <span data-translate="fertilizerCalculator"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/agribot.png" alt="AgriBot" class="feature-image"> <!-- Image for AgriBot -->
+                    <a href="/bot">
+                        <button class="btn btn-danger btn-lg btn-block">
+                            <i class="fas fa-robot"></i> <span data-translate="agriBot"></span>
+                        </button> 
+                    </a>
+                </div>   
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/news.png" alt="Supplements" class="feature-image"> <!-- Image for Seeds -->
+                    <a href="https://kisanvedika.bighaat.com/news-updates/" target="_blank">
+                        <button class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-newspaper"></i> <span data-translate="newsUpdates"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/tool.png" alt="Supplements" class="feature-image"> <!-- Image for Seeds -->
+                    <a href="https://agrimart.in/index.php/home/list_products" target="_blank">
+                        <button class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-tools"></i> <span data-translate="tools"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/loan.png" alt="Supplements" class="feature-image"> <!-- Image for Seeds -->
+                    <a href="https://www.nabard.org/content1.aspx?id=23&catid=23&mid=530" target="_blank">
+                        <button class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-search"></i> <span data-translate="govtSchemes"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fertilizer Calculator Button -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/elearning.png" alt="E-learning" class="feature-image"> <!-- Image for E-learning -->
+                    <a href="https://academy.cabi.org/" target="_blank">
+                        <button class="btn btn-secondary btn-lg btn-block">
+                            <i class="fas fa-graduation-cap"></i> <span data-translate="eLearning"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/supplements.png" alt="Supplements" class="feature-image"> <!-- Image for Supplements -->
+                    <a href="/market">
+                        <button class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-store"></i> <span data-translate="fertilizers"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="border-container">
+                    <img src="static/images/seeds.png" alt="Supplements" class="feature-image"> <!-- Image for Seeds -->
+                    <a href="https://agribegri.com/buy-cheap-agricultural-seeds-online-in-india.php" target="_blank">
+                        <button class="btn btn-primary btn-lg btn-block">
+                            <i class="fas fa-seedling"></i> <span data-translate="seeds"></span>
+                        </button> 
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p data-translate="footer"></p>
+    </footer>
+</body>
+</html>
